@@ -1,7 +1,9 @@
 import Users from './users.mjs';
-import Album from './albumControler.mjs';
+import Albums from './albumControler.mjs';
+import Photos from './photoControler.mjs';
 
 export default {
   Users,
-  Album
+  Albums,
+  Photos
 };
