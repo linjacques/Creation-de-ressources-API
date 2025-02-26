@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "npx eslint ./src/**/*.mjs && node index.mjs ",
     "prod": "node index.mjs production",
-    "lint": "npx eslint ./src/**/*.mjs"
+    "lint": "npx eslint ./src/**/*.mjs",
+    "run": "index.mjs"
   },
   "author": "Cyril Vimard",
   "license": "ISC",
@@ -20,8 +21,11 @@
     "mongoose": "^7.2.4"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.21.0",
     "eslint": "^8.42.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5"
+    "eslint-plugin-import": "^2.27.5",
+    "globals": "^16.0.0"
   }
 }
