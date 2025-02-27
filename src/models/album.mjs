@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const AlbumSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: false },
-  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
+  photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo', required: false }],
   created_at: { type: Date, default: Date.now }
 }, {
   collection: 'albums',
