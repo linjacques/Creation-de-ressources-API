@@ -11,7 +11,7 @@ class Photos {
     // eslint-disable-next-line consistent-return
     this.app.get('/photo/:id', (req, res) => {
       try {
-        const photo = this.PhotoModel.findById(req.params.id).populate('album');
+        const photo = this.PhotoModel.findById(req.params.id);
         if (!photo) {
           return res.status(404).json({ message: 'Photo non trouvée' });
         }
@@ -26,7 +26,7 @@ class Photos {
   async create() {
     this.app.post('/photo/', (req, res) => {
       try {
-        const photo = new this.PhotoModel(req.body).save();
+        const photo = new this.PhotoModel(req.body).populate('album').save();
         res.status(201).json(photo || {});
       } catch (err) {
         console.error(`[ERROR] photo/create -> ${err}`);

@@ -11,7 +11,7 @@ const Albums = class Albums {
   deleteById() {
     this.app.delete('/album/:id', (req, res) => {
       try {
-        this.AlbumModel.findByIdAndDelete(req.params.id).then((album) => {
+        this.AlbumModel.findByIdAndDelete(req.params.id).populate('photos').then((album) => {
           res.status(200).json(album || {});
         }).catch(() => {
           res.status(500).json({
@@ -33,7 +33,7 @@ const Albums = class Albums {
   showById() {
     this.app.get('/album/:id', (req, res) => {
       try {
-        this.AlbumModel.findById(req.params.id).populate('photos').then((album) => {
+        this.AlbumModel.findById(req.params.id).then((album) => {
           res.status(200).json(album || {});
         }).catch(() => {
           res.status(500).json({
@@ -53,25 +53,15 @@ const Albums = class Albums {
   }
 
   create() {
-    this.app.post('/album/', (req, res) => {
+    this.app.post('/album/', async (req, res) => {
       try {
-        const albumModel = new this.AlbumModel(req.body);
-
-        albumModel.save().then((album) => {
-          res.status(200).json(album || {});
-        }).catch(() => {
-          res.status(500).json({
-            code: 500,
-            message: 'Internal Server error'
-          });
-        });
+        let album = new this.AlbumModel(req.body);
+        album = await album.save();
+        album = await album.populate('photos');
+        res.status(201).json(album);
       } catch (err) {
         console.error(`[ERROR] album/create -> ${err}`);
-
-        res.status(400).json({
-          code: 400,
-          message: 'Bad request'
-        });
+        res.status(400).json({ code: 400, message: 'Bad request' });
       }
     });
   }
