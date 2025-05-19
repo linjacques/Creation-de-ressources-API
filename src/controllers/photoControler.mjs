@@ -63,10 +63,44 @@ class Photos {
     });
   }
 
+  updateById() {
+    this.app.put('/photo/:id', (req, res) => {
+      try {
+        const photoId = req.params.id;
+        this.PhotoModel.findByIdAndUpdate(photoId, req.body, { new: true })
+          // eslint-disable-next-line consistent-return
+          .then((photo) => {
+            if (!photo) {
+              return res.status(404).json({
+                code: 404,
+                message: 'Photos not found'
+              });
+            }
+            res.status(200).json(photo);
+          })
+          .catch((err) => {
+            console.error('[ERROR] update photo/:id ->', err);
+            res.status(500).json({
+              code: 500,
+              message: 'internal server error',
+              error: err.message
+            });
+          });
+      } catch (err) {
+        console.error('[ERROR] photo/:id (global catch) ->', err);
+        res.status(400).json({
+          code: 400,
+          message: 'bqd request'
+        });
+      }
+    });
+  }
+
   run() {
     this.create();
     this.showById();
     this.deleteById();
+    this.updateById();
   }
 }
 
