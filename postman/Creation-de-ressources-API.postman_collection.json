@@ -74,7 +74,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"{{$randomFileName}}\",\r\n    \"url\": \"{{$randomAvatarImage}}\",\r\n    \"album\": \"67c070c44746d084b37a2c01\"\r\n}",
+							"raw": "{\r\n    \"title\": \"{{$randomFileName}}\",\r\n    \"url\": \"{{$randomAvatarImage}}\",\r\n    \"album\": \"682aedea8190b924a4c9832b\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -167,10 +167,80 @@
 			"name": "Update",
 			"item": [
 				{
-					"name": "updateUser",
+					"name": "updateUserById",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/664a9c6d1c3b2f276cc1789a\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"664a9c6d1c3b2f276cc1789a\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAlbumById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/album/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"album",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePhotoById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Titre mis à jour\",\r\n  \"url\": \"https://example.com/photo.jpg\",\r\n  \"album\": \"66501b28e856f61ac873c8a7\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/photo/682af0ec037200557bc1a4db",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"photo",
+								"682af0ec037200557bc1a4db"
+							]
+						}
 					},
 					"response": []
 				}
