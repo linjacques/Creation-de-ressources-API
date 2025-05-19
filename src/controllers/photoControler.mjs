@@ -23,14 +23,22 @@ class Photos {
     });
   }
 
-  async create() {
-    this.app.post('/photo/', (req, res) => {
+  create() {
+    this.app.post('/photo', (req, res) => {
       try {
-        const photo = new this.PhotoModel(req.body).populate('album').save();
-        res.status(201).json(photo || {});
+        const photo = new this.PhotoModel(req.body);
+        photo.save()
+          .then((savedPhoto) => savedPhoto.populate('album'))
+          .then((populatedPhoto) => {
+            res.status(201).json(populatedPhoto);
+          })
+          .catch((err) => {
+            console.error(`[ERROR] photo/create -> ${err}`);
+            res.status(400).json({ message: 'Requête incorrecte' });
+          });
       } catch (err) {
-        console.error(`[ERROR] photo/create -> ${err}`);
-        res.status(400).json({ message: 'Requête incorrecte' });
+        console.error(`[ERROR] photo/create (catch global) -> ${err}`);
+        res.status(500).json({ message: 'internal server error' });
       }
     });
   }

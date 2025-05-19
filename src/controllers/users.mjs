@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import UserModel from '../models/user.mjs';
 
 const Users = class Users {
@@ -73,10 +74,43 @@ const Users = class Users {
     });
   }
 
+  updateById() {
+    this.app.put('/user/:id', (req, res) => {
+      try {
+        this.UserModel.findByIdAndUpdate(
+          req.params.id,
+          req.body,
+          { new: true }
+        ).then((user) => {
+          if (!user) {
+            return res.status(404).json({
+              code: 404,
+              message: 'No user found'
+            });
+          }
+          res.status(200).json(user);
+        }).catch(() => {
+          res.status(500).json({
+            code: 500,
+            message: 'internal server error'
+          });
+        });
+      } catch (err) {
+        console.error(`[ERROR] users/:id -> ${err}`);
+
+        res.status(400).json({
+          code: 400,
+          message: 'bad request'
+        });
+      }
+    });
+  }
+
   run() {
     this.create();
     this.showById();
     this.deleteById();
+    this.updateById();
   }
 };
 
