@@ -13,7 +13,7 @@ class Photos {
       try {
         const photoDoc = await this.PhotoModel.findById(req.params.id).populate('album');
         if (!photoDoc) {
-          return res.status(404).json({ message: 'Photo non trouvée' });
+          return res.status(404).json({ message: 'Photos not found' });
         }
         const photo = photoDoc.toObject();
         if (photo.album && photo.album.photos) {
@@ -22,7 +22,7 @@ class Photos {
         res.status(200).json(photo);
       } catch (err) {
         console.error(`[ERROR] photo/:id -> ${err}`);
-        res.status(500).json({ message: 'Erreur interne du serveur' });
+        res.status(500).json({ message: 'internal server errror' });
       }
     });
   }
@@ -38,7 +38,7 @@ class Photos {
           })
           .catch((err) => {
             console.error(`[ERROR] photo/create -> ${err}`);
-            res.status(400).json({ message: 'Requête incorrecte' });
+            res.status(400).json({ message: 'bad request' });
           });
       } catch (err) {
         console.error(`[ERROR] photo/create (catch global) -> ${err}`);
@@ -53,12 +53,12 @@ class Photos {
       try {
         const photo = this.PhotoModel.findByIdAndDelete(req.params.id);
         if (!photo) {
-          return res.status(404).json({ message: 'Photo non trouvée' });
+          return res.status(404).json({ message: 'Photos not found' });
         }
-        res.json({ message: 'Photo supprimée avec succès' });
+        res.json({ message: 'photos deleted' });
       } catch (err) {
         console.error(`[ERROR] photo/:id -> ${err}`);
-        res.status(500).json({ message: 'Erreur interne du serveur' });
+        res.status(500).json({ message: 'internal server error' });
       }
     });
   }

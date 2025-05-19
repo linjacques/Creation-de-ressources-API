@@ -89,10 +89,12 @@ const Users = class Users {
             });
           }
           res.status(200).json(user);
-        }).catch(() => {
+        }).catch((err) => {
           res.status(500).json({
             code: 500,
-            message: 'internal server error'
+            message: 'internal server error',
+            error: err.message,
+            stack: err.stack
           });
         });
       } catch (err) {
