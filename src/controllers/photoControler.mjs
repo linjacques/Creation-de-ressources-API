@@ -7,15 +7,19 @@ class Photos {
     this.run();
   }
 
-  async showById() {
+  showById() {
     // eslint-disable-next-line consistent-return
-    this.app.get('/photo/:id', (req, res) => {
+    this.app.get('/photo/:id', async (req, res) => {
       try {
-        const photo = this.PhotoModel.findById(req.params.id);
-        if (!photo) {
+        const photoDoc = await this.PhotoModel.findById(req.params.id).populate('album');
+        if (!photoDoc) {
           return res.status(404).json({ message: 'Photo non trouvée' });
         }
-        res.json(photo);
+        const photo = photoDoc.toObject();
+        if (photo.album && photo.album.photos) {
+          delete photo.album.photos;
+        }
+        res.status(200).json(photo);
       } catch (err) {
         console.error(`[ERROR] photo/:id -> ${err}`);
         res.status(500).json({ message: 'Erreur interne du serveur' });
