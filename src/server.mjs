@@ -6,11 +6,8 @@ import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 // Core
-import dotenv from 'dotenv';
 import config from './config.mjs';
 import routes from './controllers/routes.mjs';
-
-dotenv.config();
 
 const Server = class Server {
   constructor() {
@@ -65,7 +62,8 @@ const Server = class Server {
 
   middleware() {
     this.app.use(compression());
-    this.app.use(cors());
+    // Oui je veux bloquer TOUTES les requetes provenant de navigateur
+    this.app.use(cors({ origin: false })); // Pour tester le CORS
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
   }
