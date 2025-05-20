@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import UserModel from '../models/user.mjs';
+import authenticateToken from '../middleware/jwt.mjs';
 
 const Users = class Users {
   constructor(app, connect) {
@@ -10,7 +11,7 @@ const Users = class Users {
   }
 
   deleteById() {
-    this.app.delete('/user/:id', (req, res) => {
+    this.app.delete('/user/:id', authenticateToken, (req, res) => {
       try {
         this.UserModel.findByIdAndDelete(req.params.id).then((user) => {
           res.status(200).json(user || {});
@@ -32,7 +33,7 @@ const Users = class Users {
   }
 
   showById() {
-    this.app.get('/user/:id', (req, res) => {
+    this.app.get('/user/:id', authenticateToken, (req, res) => {
       try {
         this.UserModel.findById(req.params.id).then((user) => {
           res.status(200).json(user || {});
@@ -54,7 +55,7 @@ const Users = class Users {
   }
 
   create() {
-    this.app.post('/user/', (req, res) => {
+    this.app.post('/user/', authenticateToken, (req, res) => {
       try {
         const userModel = new this.UserModel(req.body);
 
@@ -75,7 +76,7 @@ const Users = class Users {
   }
 
   updateById() {
-    this.app.put('/user/:id', (req, res) => {
+    this.app.put('/user/:id', authenticateToken, (req, res) => {
       try {
         this.UserModel.findByIdAndUpdate(
           req.params.id,

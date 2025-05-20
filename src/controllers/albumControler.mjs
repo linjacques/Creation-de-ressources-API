@@ -1,4 +1,5 @@
 import AlbumModel from '../models/album.mjs';
+import authenticateToken from '../middleware/jwt.mjs';
 
 const Albums = class Albums {
   constructor(app, connect) {
@@ -9,7 +10,7 @@ const Albums = class Albums {
   }
 
   deleteById() {
-    this.app.delete('/album/:id', (req, res) => {
+    this.app.delete('/album/:id', authenticateToken, (req, res) => {
       try {
         this.AlbumModel.findByIdAndDelete(req.params.id).populate('photos').then((album) => {
           res.status(200).json(album || {});
@@ -31,7 +32,7 @@ const Albums = class Albums {
   }
 
   showById() {
-    this.app.get('/album/:id', (req, res) => {
+    this.app.get('/album/:id', authenticateToken, (req, res) => {
       try {
         this.AlbumModel.findById(req.params.id).then((album) => {
           res.status(200).json(album || {});
@@ -53,7 +54,7 @@ const Albums = class Albums {
   }
 
   create() {
-    this.app.post('/album/', async (req, res) => {
+    this.app.post('/album/', authenticateToken, async (req, res) => {
       try {
         let album = new this.AlbumModel(req.body);
         album = await album.save();
@@ -67,7 +68,7 @@ const Albums = class Albums {
   }
 
   updateById() {
-    this.app.put('/album/:id', async (req, res) => {
+    this.app.put('/album/:id', authenticateToken, async (req, res) => {
       try {
         const albumId = req.params.id;
         const album = await this.AlbumModel.findByIdAndUpdate(albumId, req.body, { new: true });
