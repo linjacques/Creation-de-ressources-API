@@ -72,6 +72,7 @@ const Server = class Server {
     new routes.Users(this.app, this.connect);
     new routes.Albums(this.app, this.connect);
     new routes.Photos(this.app, this.connect);
+    new routes.Auth(this.app, this.connect);
 
     this.app.use((req, res) => {
       res.status(404).json({
