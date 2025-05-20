@@ -5,10 +5,12 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-
 // Core
+import dotenv from 'dotenv';
 import config from './config.mjs';
 import routes from './controllers/routes.mjs';
+
+dotenv.config();
 
 const Server = class Server {
   constructor() {
