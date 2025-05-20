@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Schema from '../models/user.mjs';
+import generalLimiter from '../middleware/limiter.mjs';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const Auth = class Auth {
   }
 
   login() {
-    this.app.post('/login/', (req, res) => {
+    this.app.post('/login/', generalLimiter, (req, res) => {
       try {
         const { email, password } = req.body;
 

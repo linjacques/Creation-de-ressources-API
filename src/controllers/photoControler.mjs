@@ -1,5 +1,6 @@
 import PhotoModel from '../models/photo.mjs';
 import authenticateToken from '../middleware/jwt.mjs';
+import generalLimiter from '../middleware/limiter.mjs';
 
 class Photos {
   constructor(app, connect) {
@@ -9,7 +10,7 @@ class Photos {
   }
 
   showById() {
-    this.app.get('/photo/:id', authenticateToken, async (req, res) => {
+    this.app.get('/photo/:id', generalLimiter, authenticateToken, async (req, res) => {
       try {
         const photoDoc = await this.PhotoModel.findById(req.params.id).populate('album');
         if (!photoDoc) {
@@ -30,7 +31,7 @@ class Photos {
   }
 
   create() {
-    this.app.post('/photo', authenticateToken, (req, res) => {
+    this.app.post('/photo', generalLimiter, authenticateToken, (req, res) => {
       try {
         const photo = new this.PhotoModel(req.body);
         photo.save()
@@ -50,7 +51,7 @@ class Photos {
   }
 
   async deleteById() {
-    this.app.delete('/photo/:id', authenticateToken, async (req, res) => {
+    this.app.delete('/photo/:id', generalLimiter, authenticateToken, async (req, res) => {
       try {
         const photo = await this.PhotoModel.findByIdAndDelete(req.params.id);
 
@@ -67,7 +68,7 @@ class Photos {
   }
 
   updateById() {
-    this.app.put('/photo/:id', authenticateToken, (req, res) => {
+    this.app.put('/photo/:id', generalLimiter, authenticateToken, (req, res) => {
       try {
         const photoId = req.params.id;
         return this.PhotoModel.findByIdAndUpdate(photoId, req.body, { new: true })
