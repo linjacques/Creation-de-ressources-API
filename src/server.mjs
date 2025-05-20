@@ -5,14 +5,26 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
+import https from 'https';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 // Core
+import fs from 'fs';
 import config from './config.mjs';
 import routes from './controllers/routes.mjs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const Server = class Server {
   constructor() {
     this.app = express();
     this.config = config[process.argv[2]] || config.development;
+    this.sslOptions = {
+      key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
+    };
   }
 
   async dbConnect() {
@@ -93,11 +105,13 @@ const Server = class Server {
       this.security();
       this.middleware();
       this.routes();
-      this.app.listen(this.config.port);
+
+      https.createServer(this.sslOptions, this.app).listen(this.config.port, () => {
+        console.log(`Serveur HTTPS lancé sur https://localhost:${this.config.port}`);
+      });
     } catch (err) {
       console.error(`[ERROR] Server -> ${err}`);
     }
   }
 };
-
 export default Server;
