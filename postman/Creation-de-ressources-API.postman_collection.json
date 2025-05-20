@@ -12,11 +12,21 @@
 				{
 					"name": "createUser",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MmM0Mzk3ZDY4NDA4ODkzY2QwYmMwYiIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3NDc3MzY4NzQsImV4cCI6MTc0Nzc0MDQ3NH0.jBVWt1k-LZsyjrV74iNlEKi6xAYtlONt4Ux3i0ZFrnc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstname\": \"{{$randomUserName}}\",\r\n    \"lastname\": \"{{$randomLastName}}\",\r\n    \"avatar\": \"{{$randomBankAccountIban}}\",\r\n    \"age\": \"{{$randomInt}}\",\r\n    \"city\": \"{{$randomCity}}\"\r\n}",
+							"raw": "{\r\n    \"firstname\": \"{{$randomUserName}}\",\r\n    \"lastname\": \"{{$randomLastName}}\",\r\n    \"avatar\": \"{{$randomBankAccountIban}}\",\r\n    \"age\": \"{{$randomInt}}\",\r\n    \"city\": \"{{$randomCity}}\",\r\n    \"password\": \"123\",\r\n    \"email\": \"test@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,8 +34,8 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/user/",
-							"protocol": "http",
+							"raw": "https://localhost:3000/user/",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -41,6 +51,16 @@
 				{
 					"name": "createAlbum",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MmM0Mzk3ZDY4NDA4ODkzY2QwYmMwYiIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3NDc3NDA4MTUsImV4cCI6MTc0Nzc0NDQxNX0.Xq4YXxUhPBNmo_FOKnFDIAgM4fai_lHyn4dW5GPmMEY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -53,8 +73,8 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/album/",
-							"protocol": "http",
+							"raw": "https://localhost:3000/album/",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -107,8 +127,8 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/67a1f2ff7a74c564fc28aafe",
-							"protocol": "http",
+							"raw": "https://localhost:3000/user/67a1f2ff7a74c564fc28aafe",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -123,12 +143,24 @@
 				},
 				{
 					"name": "getAlbumById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3000/album/67c075584746d084b37a2c1a",
-							"protocol": "http",
+							"raw": "https://localhost:3000/album/67c075584746d084b37a2c1a",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -147,8 +179,8 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/photo/67c075474746d084b37a2c17",
-							"protocol": "http",
+							"raw": "https://localhost:3000/photo/67c075474746d084b37a2c17",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -172,8 +204,8 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/664a9c6d1c3b2f276cc1789a\n",
-							"protocol": "http",
+							"raw": "https://localhost:3000/user/664a9c6d1c3b2f276cc1789a\n",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -193,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n  \"title\": \"Nouvel album344\",\r\n  \"description\": \"Mise à jour du texte44\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -201,15 +233,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/album/",
-							"protocol": "http",
+							"raw": "https://localhost:3000/album/682aedea8190b924a4c9832b",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"album",
-								""
+								"682aedea8190b924a4c9832b"
 							]
 						}
 					},
@@ -222,7 +254,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Titre mis à jour\",\r\n  \"url\": \"https://example.com/photo.jpg\",\r\n  \"album\": \"66501b28e856f61ac873c8a7\"\r\n}\r\n",
+							"raw": "{\r\n  \"title\": \"Titre mis à jour333\",\r\n  \"url\": \"https://example.com/photo.jpg\",\r\n  \"album\": \"66501b28e856f61ac873c8a7\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,8 +262,8 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/photo/682af0ec037200557bc1a4db",
-							"protocol": "http",
+							"raw": "https://localhost:3000/photo/682af0ec037200557bc1a4db",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -255,15 +287,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/67bf13e65edcc9956cdac742",
-							"protocol": "http",
+							"raw": "https://localhost:3000/user/67a1f2ff7a74c564fc28aafe",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user",
-								"67bf13e65edcc9956cdac742"
+								"67a1f2ff7a74c564fc28aafe"
 							]
 						}
 					},
@@ -275,8 +307,8 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/album/67a238890ed87cf2f5c58158",
-							"protocol": "http",
+							"raw": "https://localhost:3000/album/67a238890ed87cf2f5c58158",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
@@ -295,14 +327,48 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/photo/",
-							"protocol": "http",
+							"raw": "https://localhost:3000/photo/67bef9e826752f36774f2436",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"photo",
+								"67bef9e826752f36774f2436"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:3000/login/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login",
 								""
 							]
 						}
