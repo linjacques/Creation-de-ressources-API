@@ -67,33 +67,25 @@ const Albums = class Albums {
   }
 
   updateById() {
-    this.app.put('/album/:id', (req, res) => {
+    this.app.put('/album/:id', async (req, res) => {
       try {
         const albumId = req.params.id;
-        this.AlbumModel.findByIdAndUpdate(albumId, req.body, { new: true })
-          // eslint-disable-next-line consistent-return
-          .then((album) => {
-            if (!album) {
-              return res.status(404).json({
-                code: 404,
-                message: 'Album not found'
-              });
-            }
-            res.status(200).json(album);
-          })
-          .catch((err) => {
-            console.error('[ERROR] update album/:id ->', err);
-            res.status(500).json({
-              code: 500,
-              message: 'internal server error',
-              error: err.message
-            });
+        const album = await this.AlbumModel.findByIdAndUpdate(albumId, req.body, { new: true });
+
+        if (!album) {
+          return res.status(404).json({
+            code: 404,
+            message: 'Album not found'
           });
+        }
+
+        return res.status(200).json(album);
       } catch (err) {
-        console.error(`[ERROR] album/:id -> ${err}`);
-        res.status(400).json({
-          code: 400,
-          message: 'bad request'
+        console.error('[ERROR] update album/:id ->', err);
+        return res.status(500).json({
+          code: 500,
+          message: 'Internal server error',
+          error: err.message
         });
       }
     });

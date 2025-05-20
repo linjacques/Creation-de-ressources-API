@@ -8,21 +8,22 @@ class Photos {
   }
 
   showById() {
-    // eslint-disable-next-line consistent-return
     this.app.get('/photo/:id', async (req, res) => {
       try {
         const photoDoc = await this.PhotoModel.findById(req.params.id).populate('album');
         if (!photoDoc) {
           return res.status(404).json({ message: 'Photos not found' });
         }
+
         const photo = photoDoc.toObject();
+
         if (photo.album && photo.album.photos) {
           delete photo.album.photos;
         }
-        res.status(200).json(photo);
+        return res.status(200).json(photo);
       } catch (err) {
         console.error(`[ERROR] photo/:id -> ${err}`);
-        res.status(500).json({ message: 'internal server errror' });
+        return res.status(500).json({ message: 'internal server error' });
       }
     });
   }
@@ -48,17 +49,18 @@ class Photos {
   }
 
   async deleteById() {
-    // eslint-disable-next-line consistent-return
-    this.app.delete('/photo/:id', (req, res) => {
+    this.app.delete('/photo/:id', async (req, res) => {
       try {
-        const photo = this.PhotoModel.findByIdAndDelete(req.params.id);
+        const photo = await this.PhotoModel.findByIdAndDelete(req.params.id);
+
         if (!photo) {
           return res.status(404).json({ message: 'Photos not found' });
         }
-        res.json({ message: 'photos deleted' });
+
+        return res.json({ message: 'Photos deleted' });
       } catch (err) {
         console.error(`[ERROR] photo/:id -> ${err}`);
-        res.status(500).json({ message: 'internal server error' });
+        return res.status(500).json({ message: 'Internal server error' });
       }
     });
   }
@@ -67,8 +69,7 @@ class Photos {
     this.app.put('/photo/:id', (req, res) => {
       try {
         const photoId = req.params.id;
-        this.PhotoModel.findByIdAndUpdate(photoId, req.body, { new: true })
-          // eslint-disable-next-line consistent-return
+        return this.PhotoModel.findByIdAndUpdate(photoId, req.body, { new: true })
           .then((photo) => {
             if (!photo) {
               return res.status(404).json({
@@ -76,11 +77,11 @@ class Photos {
                 message: 'Photos not found'
               });
             }
-            res.status(200).json(photo);
+            return res.status(200).json(photo);
           })
           .catch((err) => {
             console.error('[ERROR] update photo/:id ->', err);
-            res.status(500).json({
+            return res.status(500).json({
               code: 500,
               message: 'internal server error',
               error: err.message
@@ -88,9 +89,9 @@ class Photos {
           });
       } catch (err) {
         console.error('[ERROR] photo/:id (global catch) ->', err);
-        res.status(400).json({
+        return res.status(400).json({
           code: 400,
-          message: 'bqd request'
+          message: 'bad request'
         });
       }
     });
