@@ -1,4 +1,6 @@
 import AlbumModel from '../models/album.mjs';
+import authenticateToken from '../middleware/jwt.mjs';
+import generalLimiter from '../middleware/limiter.mjs';
 
 const Albums = class Albums {
   constructor(app, connect) {
@@ -9,7 +11,7 @@ const Albums = class Albums {
   }
 
   deleteById() {
-    this.app.delete('/album/:id', (req, res) => {
+    this.app.delete('/album/:id', generalLimiter, authenticateToken, (req, res) => {
       try {
         this.AlbumModel.findByIdAndDelete(req.params.id).populate('photos').then((album) => {
           res.status(200).json(album || {});
@@ -31,7 +33,7 @@ const Albums = class Albums {
   }
 
   showById() {
-    this.app.get('/album/:id', (req, res) => {
+    this.app.get('/album/:id', generalLimiter, authenticateToken, (req, res) => {
       try {
         this.AlbumModel.findById(req.params.id).then((album) => {
           res.status(200).json(album || {});
@@ -53,7 +55,7 @@ const Albums = class Albums {
   }
 
   create() {
-    this.app.post('/album/', async (req, res) => {
+    this.app.post('/album/', generalLimiter, authenticateToken, async (req, res) => {
       try {
         let album = new this.AlbumModel(req.body);
         album = await album.save();
@@ -67,33 +69,25 @@ const Albums = class Albums {
   }
 
   updateById() {
-    this.app.put('/album/:id', (req, res) => {
+    this.app.put('/album/:id', generalLimiter, authenticateToken, async (req, res) => {
       try {
         const albumId = req.params.id;
-        this.AlbumModel.findByIdAndUpdate(albumId, req.body, { new: true })
-          // eslint-disable-next-line consistent-return
-          .then((album) => {
-            if (!album) {
-              return res.status(404).json({
-                code: 404,
-                message: 'Album not found'
-              });
-            }
-            res.status(200).json(album);
-          })
-          .catch((err) => {
-            console.error('[ERROR] update album/:id ->', err);
-            res.status(500).json({
-              code: 500,
-              message: 'internal server error',
-              error: err.message
-            });
+        const album = await this.AlbumModel.findByIdAndUpdate(albumId, req.body, { new: true });
+
+        if (!album) {
+          return res.status(404).json({
+            code: 404,
+            message: 'Album not found'
           });
+        }
+
+        return res.status(200).json(album);
       } catch (err) {
-        console.error(`[ERROR] album/:id -> ${err}`);
-        res.status(400).json({
-          code: 400,
-          message: 'bad request'
+        console.error('[ERROR] update album/:id ->', err);
+        return res.status(500).json({
+          code: 500,
+          message: 'Internal server error',
+          error: err.message
         });
       }
     });
